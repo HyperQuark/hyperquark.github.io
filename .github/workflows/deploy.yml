@@ -43,6 +43,7 @@ jobs:
           
       - name: Run npm install
         run: |
+          cd $GITHUB_WORKSPACE/hyperquark
           npm install
           npm i -g vite
           npm i -g binaryen@nightly
