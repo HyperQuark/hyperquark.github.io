@@ -50,7 +50,6 @@ jobs:
       
       - name: Build
         env:
-          VITE_HASH_HISTORY: false
           NODE_ENV: production
         run: |
           cd $GITHUB_WORKSPACE/hyperquark
