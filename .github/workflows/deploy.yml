@@ -1,10 +1,15 @@
 on:
   workflow_dispatch:
+    inputs:
+      tag:
+        required: true
+        type: string
+        description: which tag (on the hyperquark/hyperquark repository) should we build from?
 
 name: Deploy
 
 jobs:
-  deploy:
+  build:
     name: Build WASM & website
     runs-on: ubuntu-latest
     permissions:
@@ -15,6 +20,7 @@ jobs:
         with:
           repository: hyperquark/hyperquark
           path: hyperquark
+          ref: ${{ inputs.tag }}
 
       - name: Install nightly toolchain
         uses: actions-rs/toolchain@v1
@@ -66,12 +72,68 @@ jobs:
       
       - name: move file to website repo
         run: |
-          cd $GITHUB_WORKSPACE/website
+          cd $GITHUB_WORKSPACE/website/pages
           rm -rf assets index.html logo.png favicon.ico renderer.js
-          mv /tmp/hq-dist/* $GITHUB_WORKSPACE/website/
+          mv /tmp/hq-dist/* $GITHUB_WORKSPACE/website/pages/
       
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           repository: ./website
           commit_message: Build website
+
+  pages:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'pages'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  compute:
+    needs: [build, pages]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup rust
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+          target: wasm32-wasip1
+      
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20.x"
+          
+      - name: Install fastly CLI
+        run: npm i -g fastly@latest
+
+      - name: Build compute
+        run: fastly compute build
+
+      - name: Purge previous version & deploy
+        env:
+          FASTLY_API_TOKEN : ${{ secrets.FASTLY_API_TOKEN }}
+        run: |
+          fastly purge --all
+          fastly compute deploy --domain=hyperquark.edgecompute.app --accept-defaults"
+
+
+
+

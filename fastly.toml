@@ -1,0 +1,17 @@
+# This file describes a Fastly Compute@Edge package. To learn more visit:
+# https://developer.fastly.com/reference/fastly-toml/
+
+authors = ["pufferfish101007"]
+language = "rust"
+manifest_version = 3
+description = "HyperQuark"
+service_id = "HjheuqHb4e2e2zURKwD436"
+name = "hyperquark"
+
+[scripts]
+  build = "node build.mjs && cargo build --target=wasm32-wasip1 --release"
+
+[local_server.backends."github"] 
+  url = "https://hyperquark.github.io"
+  cert_host = "hyperquark.github.io"
+  override_host = "hyperquark.github.io"

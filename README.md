@@ -1,0 +1,1 @@
+This repository contains the code which is used to build the HyperQuark website at [https://hyperquark.edgecompute.app](https://hyperquark.edgecompute.app). It also delpoys some pages to Github Pages but these are simply static files to back the compute@edge service.
