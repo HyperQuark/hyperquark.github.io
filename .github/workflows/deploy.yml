@@ -57,6 +57,7 @@ jobs:
       - name: Build
         env:
           NODE_ENV: production
+          HQ_VERSION_NAME: ${{ inputs.tag }}
         run: |
           cd $GITHUB_WORKSPACE/hyperquark
           chmod +x build.sh && ./build.sh -Wpz
