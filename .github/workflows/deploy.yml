@@ -125,7 +125,7 @@ jobs:
           node-version: "20.x"
           
       - name: Install fastly CLI
-        run: npm i -g fastly@latest
+        run: npm i -g @fastly/cli@latest
 
       - name: Build compute
         run: fastly compute build
