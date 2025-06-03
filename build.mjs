@@ -19,7 +19,7 @@ const pathMatches = fileNames.map((name) => `"/${name}"`)
 const pathMatcher = `match req.get_path() {
     ${pathMatches.join(' | ')} => req.with_set_header("Host", "hyperquark.github.io").send(BACKEND)?,
     path @ _ => {
-        let ok_path_re = Regex::new(r"^/(settings|about|projects/(file|test|\d+))?$").unwrap();
+        let ok_path_re = Regex::new(r"^/((settings|about|projects/(file|test|\d+))/?)?$").unwrap();
         if ok_path_re.is_match(path) {
             Request::get("https://hyperquark.github.io/").send(BACKEND)?
         } else {
