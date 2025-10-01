@@ -1,5 +1,5 @@
 const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/empty-WM5V5GFL.js","assets/_commonjsHelpers-DsqdWQfm.js"])))=>i.map(i=>d[i]);
-import{C as dI}from"./index-DcjUIA1m.js";import{p as NA}from"./index-BAMY2Nnw.js";import{B as qQ}from"./index-BATEtbik.js";/**
+import{C as dI}from"./index-DY9X7Krs.js";import{p as NA}from"./index-BAMY2Nnw.js";import{B as qQ}from"./index-BATEtbik.js";/**
  * @license
  * Copyright 2025 The Binaryen Authors.
  * SPDX-License-Identifier: Apache-2.0
