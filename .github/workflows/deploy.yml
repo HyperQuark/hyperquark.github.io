@@ -51,7 +51,6 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE/hyperquark
           npm install
-          npm i -g vite
           npm i -g binaryen@nightly
       
       - name: Build
@@ -60,7 +59,7 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE/hyperquark
           chmod +x build.sh && ./build.sh -Wpz
-          vite build --base=/
+          npm run build -- --base=/
       
       - name: Move files to tmp
         run: mv $GITHUB_WORKSPACE/hyperquark/playground/dist /tmp/hq-dist
